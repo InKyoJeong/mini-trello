@@ -79,8 +79,6 @@ const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
 console.log(isLoading, data);
 ```
 
-<br>
-
 #### ReactQueryDevtools
 
 - 캐시 상태, 무엇을 query했는지 시각화가능
