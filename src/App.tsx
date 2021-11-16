@@ -3,6 +3,7 @@ import Router from "./Router";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css2?family=Shippori+Antique&display=swap');
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -32,9 +33,6 @@ const GlobalStyle = createGlobalStyle`
   *[hidden] {
       display: none;
   }
-  body {
-    line-height: 1;
-  }
   menu, ol, ul {
     list-style: none;
   }
@@ -46,9 +44,22 @@ const GlobalStyle = createGlobalStyle`
     content: '';
     content: none;
   }
+  * {
+    box-sizing: border-box;
+  }
   table {
     border-collapse: collapse;
     border-spacing: 0;
+  }
+  a{
+    text-decoration: none;
+    color: inherit;
+  }
+  body {
+    line-height: 1;
+    font-family: 'Shippori Antique', sans-serif;
+    background-color: ${(props) => props.theme.bgColor};
+     color: ${(props) => props.theme.textColor};
   }
 `;
 
