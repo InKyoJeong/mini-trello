@@ -56,10 +56,10 @@ const GlobalStyle = createGlobalStyle`
     color: inherit;
   }
   body {
-    line-height: 1;
     font-family: 'Shippori Antique', sans-serif;
     background-color: ${(props) => props.theme.bgColor};
-     color: ${(props) => props.theme.textColor};
+    color: ${(props) => props.theme.textColor};
+    line-height: 1.2;
   }
 `;
 

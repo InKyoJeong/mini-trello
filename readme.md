@@ -18,7 +18,27 @@ $ npm run build
 - react-query
 - styled-components
 
-## memo
+## Memo
+
+#### react router
+
+- Link to
+
+```tsx
+// Coins
+<Link
+  to={{
+    pathname: `/${coin.id}`,
+    state: { name: coin.name },
+  }}
+>
+```
+
+```js
+// Coin
+const { state } = useLocation();
+console.log(state.name);
+```
 
 #### fetch
 
