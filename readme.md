@@ -11,18 +11,9 @@ $ npm run dev
 $ npm run build
 ```
 
-## Setup
-
-- typescript
-- react-router
-- react-query
-- styled-components
-
 ## Memo
 
 #### react router
-
-- Link to
 
 ```tsx
 // Coins
@@ -52,4 +43,38 @@ console.log(state.name);
 (async () => {
   const response = await (await fetch(`https://api...`)).json();
 })();
+```
+
+#### react-query
+
+- before
+
+```tsx
+// Coins
+const [coins, setCoins] = useState<ICoin[]>([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  (async () => {
+    const response = await fetch("https://api.coinpaprika.com/v1/coins");
+    const json = await response.json();
+    setCoins(json.slice(0, 100));
+    setLoading(false);
+  })();
+}, []);
+```
+
+- after (caching)
+
+```tsx
+// api
+export function fetchCoins() {
+  return fetch("https://api.coinpaprika.com/v1/coins").then((response) =>
+    response.json()
+  );
+}
+
+// Coins
+const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
+console.log(isLoading, data);
 ```
