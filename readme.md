@@ -82,3 +82,10 @@ console.log(isLoading, data);
 #### ReactQueryDevtools
 
 - 캐시 상태, 무엇을 query했는지 시각화가능
+
+<br>
+
+## Docs
+
+- [https://react-query.tanstack.com/quick-start](https://react-query.tanstack.com/quick-start)
+- [https://apexcharts.com/docs/installation/](https://apexcharts.com/docs/installation/)
