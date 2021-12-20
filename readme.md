@@ -85,6 +85,16 @@ console.log(isLoading, data);
 
 <br>
 
+#### Recoil
+
+```js
+const todos = useRecoilValue(todoState);
+const setTodos = useSetRecoilState(todoState);
+
+// 같은 역할
+const [todos, setTodos] = useRecoilState(todoState);
+```
+
 <br>
 
 ## Docs
