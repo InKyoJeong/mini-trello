@@ -73,3 +73,30 @@ function ToDo({ text, category }: IToDo) {
   );
 }
 ```
+
+<br>
+
+### selector
+
+- state를 원하는대로 변형할 수 있음
+
+```js
+export const toDoState = atom<IToDo[]>({
+  key: "toDo",
+  default: [],
+});
+
+export const toDoSelector = selector({
+  key: "toDoSelector",
+  get: ({ get }) => {
+    const toDos = get(toDoState);
+    return [
+      toDos.filter((toDo) => toDo.category === "TO_DO"),
+      toDos.filter((toDo) => toDo.category === "DOING"),
+      toDos.filter((toDo) => toDo.category === "DONE"),
+    ];
+  },
+});
+```
+
+`get` function을 이용해서 `selector` 내부로 `atom`을 가져올 수 있다.
