@@ -3,16 +3,15 @@ import "regenerator-runtime/runtime";
 import React from "react";
 import { render } from "react-dom";
 import App from "./src/App";
-import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
-
-const queryClient = new QueryClient();
+import { ThemeProvider } from "styled-components";
+import { darkTheme } from "./src/theme";
 
 render(
   <RecoilRoot>
-    <QueryClientProvider client={queryClient}>
+    <ThemeProvider theme={darkTheme}>
       <App />
-    </QueryClientProvider>
+    </ThemeProvider>
   </RecoilRoot>,
   document.querySelector("#app")
 );
