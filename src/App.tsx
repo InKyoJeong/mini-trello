@@ -1,10 +1,6 @@
-import React, { useState } from "react";
-import Router from "./Router";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { darkTheme, lightTheme } from "./theme";
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atoms";
+import React from "react";
+import { createGlobalStyle } from "styled-components";
+import Todo from "./Todo";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Shippori+Antique&display=swap');
@@ -68,19 +64,12 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = () => {
-  const isDark = useRecoilValue(isDarkAtom);
-
   return (
     <>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        <Router />
-        <ReactQueryDevtools initialIsOpen={true} />
-      </ThemeProvider>
+      <GlobalStyle />
+      <Todo />
     </>
   );
 };
 
 export default App;
-
-// isDark: App -> Router -> Coin -> Chart
