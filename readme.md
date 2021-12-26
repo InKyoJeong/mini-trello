@@ -11,93 +11,142 @@ $ npm run dev
 $ npm run build
 ```
 
-## Memo
+## React Hook Form
 
-#### react router
-
-```tsx
-// Coins
-<Link
-  to={{
-    pathname: `/${coin.id}`,
-    state: { name: coin.name },
-  }}
->
-```
+#### before
 
 ```js
-// Coin
-const { state } = useLocation();
-console.log(state.name);
+function ToDoList() {
+  const [todo, setTodo] = useState("");
+  const [todoError, setTodoError] = useState("");
+
+  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value },
+    } = event;
+    setTodoError("");
+    setTodo(value);
+  };
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(todo);
+    if (todo.length < 10) {
+      return setTodoError("Todo should be longer");
+    }
+    console.log("submit");
+  };
+
+  return (
+    <div>
+      <form onSubmit={onSubmit}>
+        <input onChange={onChange} value={todo} placeholder="Write a to do" />
+        <button>Add</button>
+        {todoError !== "" ? todoError : null}
+      </form>
+    </div>
+  );
+}
 ```
 
-#### fetch
+#### after
 
 ```js
-(async () => {
-  const response = await fetch("https://api...");
-  const json = await response.json();
-})();
+import { useForm } from "react-hook-form";
+interface IForm {
+  email: string;
+  name: string;
+  password: string;
+  password2: string;
+  extraError?: string;
+}
 
-// 한줄로 캡슐화
-(async () => {
-  const response = await (await fetch(`https://api...`)).json();
-})();
-```
+// input마다 state를 만들 필요가 없다
+function ToDoList() {
+  const {
+    register,
+    watch,
+    handleSubmit,
+    formState: { errors },
+    setError,
+  } = useForm <
+  IForm >
+  {
+    defaultValues: {
+      email: "@naver.com",
+    },
+  };
 
-#### react-query
+  const onValid = (data: IForm) => {
+    if (data.password !== data.password2) {
+      setError(
+        "password",
+        { message: "비밀번호가 같지 않습니다." },
+        { shouldFocus: true }
+      );
+    }
+  };
 
-- before
+  return (
+    <div>
+      <form onSubmit={handleSubmit(onValid)}>
+        <input
+          {...register("Email", { required: true, minLength: 10 })}
+          placeholder="Email"
+        />
+        <input
+          {...register("Password", {
+            required: "비밀번호를 입력하세요!",
+            minLength: {
+              value: 4,
+              message: "비밀번호가 너무 짧아요",
+            },
+          })}
+          placeholder="Password"
+        />
 
-```tsx
-// Coins
-const [coins, setCoins] = useState<ICoin[]>([]);
-const [loading, setLoading] = useState(true);
-
-useEffect(() => {
-  (async () => {
-    const response = await fetch("https://api.coinpaprika.com/v1/coins");
-    const json = await response.json();
-    setCoins(json.slice(0, 100));
-    setLoading(false);
-  })();
-}, []);
-```
-
-- after (caching)
-
-```tsx
-// api
-export function fetchCoins() {
-  return fetch("https://api.coinpaprika.com/v1/coins").then((response) =>
-    response.json()
+        <button>Add</button>
+      </form>
+    </div>
   );
 }
 
-// Coins
-const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
-console.log(isLoading, data);
+export default ToDoList;
 ```
 
-#### ReactQueryDevtools
+- input의 `required`가 아닌 `{ required: true }`를 사용하면, 어떤 항목이 비어있는지 이동시켜주고 브라우저에서 require를 지울수도 없음. html이 아니라 js에서 validation가능
+- onValid 함수는 form 데이터가 유효할때만 호출되는함수
 
-- 캐시 상태, 무엇을 query했는지 시각화가능
-
-<br>
-
-#### Recoil
+### validate
 
 ```js
-const todos = useRecoilValue(todoState);
-const setTodos = useSetRecoilState(todoState);
-
-// 같은 역할
-const [todos, setTodos] = useRecoilState(todoState);
+<input
+  {...register("name", {
+    required: "name을 입력해주세요.",
+    validate: (value) =>
+      value.includes("ingg") ? "ingg를 포함할수 없어요" : true,
+  })}
+  placeholder="Name"
+/>
 ```
 
-<br>
+- `validate : { (value) => !value.includes("ingg") || "error message"}` 공식 문서에는 이렇게 설명
 
-## Docs
+#### 여러 검사는 객체로
 
-- [https://react-query.tanstack.com/quick-start](https://react-query.tanstack.com/quick-start)
-- [https://apexcharts.com/docs/installation/](https://apexcharts.com/docs/installation/)
+```js
+<input
+  {...register("name", {
+    required: "name을 입력해주세요.",
+    validate: {
+      noIngg: (value) =>
+        value.includes("ingg") ? "ingg를 포함할수 없어요" : true,
+      noInkk: (value) =>
+        value.includes("inkk") ? "inkk를 포함할수 없어요" : true,
+    },
+  })}
+  placeholder="Name"
+/>
+```
+
+- ` noIngg: async(value) => ...`와 같이 비동기로 서버에다가 응답을 받을 수도 있음
