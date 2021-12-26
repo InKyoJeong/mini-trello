@@ -1,6 +1,6 @@
 import React from "react";
+import TodoList from "@components/TodoList";
 import { createGlobalStyle } from "styled-components";
-import Todo from "./Todo";
 
 const GlobalStyle = createGlobalStyle`
   @import url('https://fonts.googleapis.com/css2?family=Shippori+Antique&display=swap');
@@ -67,7 +67,7 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <Todo />
+      <TodoList />
     </>
   );
 };
