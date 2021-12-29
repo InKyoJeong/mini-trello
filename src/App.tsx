@@ -1,5 +1,4 @@
 import React from "react";
-import TodoList from "@components/TodoList";
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
@@ -67,7 +66,6 @@ const App = () => {
   return (
     <>
       <GlobalStyle />
-      <TodoList />
     </>
   );
 };
