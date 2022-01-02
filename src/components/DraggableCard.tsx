@@ -1,5 +1,5 @@
 import React from "react";
-import { Droppable, Draggable } from "react-beautiful-dnd";
+import { Draggable } from "react-beautiful-dnd";
 import styled from "styled-components";
 
 const Card = styled.div<{ isDragging: boolean }>`
